@@ -25,14 +25,17 @@ function s:get_word_under_cursor()
     return expand("<cWORD>")
 endfunction
 
+function s:format_logging_text(text)
+    let l:trimmed_text = substitute(a:text, "\n *", " ", "g")
+    let l:final_text = substitute(l:trimmed_text, "^ *", "", "g")
+    return l:final_text
+endfunction
+
 function s:LogWordUnderCursor()
     let l:initial_position = getpos(".")
+
     let l:text = s:get_word_under_cursor()
-
-    let l:trimmed_text = substitute(l:text, "\n *", " ", "g")
-    let l:final_text = substitute(l:trimmed_text, "^ *", "", "g")
-
-    let l:fulltext = "console.log(" . g:js_logging_string_format . l:final_text . ": " . g:js_logging_string_format . ", " . l:final_text . ");"
+    let l:fulltext = "console.log(" . g:js_logging_string_format . l:text . ": " . g:js_logging_string_format . ", " . l:text . ");"
 
     exec "normal! o" . l:fulltext
     call setpos(".", l:initial_position)
@@ -40,11 +43,9 @@ endfunction
 
 function s:LogVisualSelection()
     let l:initial_position = getpos("'<")
+
     let l:text = s:get_visual_selection()
-
-    let l:trimmed_text = substitute(l:text, "\n *", " ", "g")
-    let l:final_text = substitute(l:trimmed_text, "^ *", "", "g")
-
+    let l:final_text = s:format_logging_text(l:text)
     let l:fulltext = "console.log(" . g:js_logging_string_format . l:final_text . ": " . g:js_logging_string_format . ", " . l:final_text . ");"
 
     exec "normal! o" . l:fulltext
