@@ -43,11 +43,13 @@ endfunction
 
 function s:LogVisualSelection()
     let l:initial_position = getpos("'<")
+    let l:final_position = getpos("'>")
 
     let l:text = s:get_visual_selection()
     let l:final_text = s:format_logging_text(l:text)
     let l:fulltext = "console.log(" . g:js_logging_string_format . l:final_text . ": " . g:js_logging_string_format . ", " . l:final_text . ");"
 
+    call setpos(".", l:final_position)
     exec "normal! o" . l:fulltext
     call setpos(".", l:initial_position)
 endfunction
