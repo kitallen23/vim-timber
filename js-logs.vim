@@ -19,6 +19,24 @@ function! s:get_visual_selection()
     return join(lines, "\n")
 endfunction
 
+function s:get_word_under_cursor()
+    return expand("<cWORD>")
+endfunction
+
+function s:LogWordUnderCursor()
+    let l:initial_position = getpos(".")
+    let l:marks = "`"
+    let l:text = s:get_word_under_cursor()
+
+    let l:trimmed_text = substitute(l:text, "\n *", " ", "g")
+    let l:final_text = substitute(l:trimmed_text, "^ *", "", "g")
+
+    let l:fulltext = "console.log(" . l:marks . l:final_text . ": " . l:marks . ", " . l:final_text . ");"
+
+    exec "normal! o" . l:fulltext
+    call setpos(".", l:initial_position)
+endfunction
+
 function s:LogVisualSelection()
     let l:initial_position = getpos("'<")
     let l:marks = "`"
@@ -31,10 +49,11 @@ function s:LogVisualSelection()
 
     exec "normal! o" . l:fulltext
     call setpos(".", l:initial_position)
+    echo mode()
 endfunction
 
-command! -range LogJS call s:LogVisualSelection()
-command! LogDebug call s:LogDebug()
+command! -range LogSelection call s:LogVisualSelection()
+command! LogWordUnderCursor call s:LogWordUnderCursor()
 
 let &cpo = s:global_cpo
 unlet s:global_cpo
