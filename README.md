@@ -1,6 +1,8 @@
 # vim-js-logs
 
-Minimal logger for js. Log the selected text or the `WORD` under the buffer as ``console.log(`name :`, name)``
+Minimal logger for js. 
+
+Log the selected `text` or the `WORD` under the buffer as ``console.log(`name :`, name)``
 
 ## Commands:
 1. LogSelection
@@ -20,3 +22,8 @@ logging string format as
 ```
 let js_logging_string_format = '"'
 ```
+
+## Todos
+
+- [x] log multi line visual select
+- [x] log the word under the cursor 
