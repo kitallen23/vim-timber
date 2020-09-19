@@ -11,7 +11,10 @@ let s:timber_logging_string_format = get(g:, "timber_logging_string_format", "`"
 " Language-specific format strings
 let s:timber_lang_map = {
     \ "javascript": get(g:, "timber_javascript_format", "console.log(`{{value}}: `, {{value}});"),
-    \ "vim": "echo {{value}}"
+    \ "typescript": get(g:, "timber_typescript_format", "console.log(`{{value}}: `, {{value}});"),
+    \ "dart": get(g:, "timber_dart_format", "print(\"{{value}}: ${{{value}}}\")"),
+    \ "python": get(g:, "timber_python_format", "print \"{{value}}: \", {{value}}"),
+    \ "vim": get(g:, "timber_vim_format", "echo {{value}}"),
 \ }
 
 function! s:get_visual_selection()
