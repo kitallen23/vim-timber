@@ -19,6 +19,14 @@ let s:timber_lang_map = {
         \ "default": get(g:, "timber_vim_format",        "echo \"{{value}}: \" . {{value}}"),
         \ "info":    get(g:, "timber_vim_format_info",   "echom \"{{value}}: \" . {{value}}"),
         \ "custom":  get(g:, "timber_vim_format_custom", "echo \"{{value}}: \" . {{value}}"),
+    \ },
+    \ "dart": {
+        \ "default": get(g:, "timber_dart_format",        "print(\"{{value}}: ${{{value}}}\")"),
+        \ "custom":  get(g:, "timber_dart_format_custom", "print(\"{{value}}: ${{{value}}}\")"),
+    \ },
+    \ "python": {
+        \ "default": get(g:, "timber_python_format",        "print \"{{value}}: \", {{value}}"),
+        \ "custom":  get(g:, "timber_python_format_custom", "print \"{{value}}: \", {{value}}"),
     \ }
 \ }
 

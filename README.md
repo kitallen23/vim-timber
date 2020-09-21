@@ -63,6 +63,14 @@ let g:timber_javascript_format_custom  = "console.log(`{{value}}: `, {{value}});
 let g:timber_vim_format                = "echo \"{{value}}: \" . {{value}}"
 let g:timber_vim_format_info           = "echom \"{{value}}: \" . {{value}}"
 let g:timber_vim_format_custom         = "echo \"{{value}}: \" . {{value}}"
+
+" python
+let g:timber_python_format             = "print \"{{value}}: \", {{value}}"
+let g:timber_python_format_custom      = "print \"{{value}}: \", {{value}}"
+
+" dart
+let g:timber_dart_format               = "print(\"{{value}}: ${{{value}}}\")"
+let g:timber_dart_format_custom        = "print(\"{{value}}: ${{{value}}}\")"
 ```
 
 ### Todos
@@ -72,9 +80,11 @@ let g:timber_vim_format_custom         = "echo \"{{value}}: \" . {{value}}"
 - [x] Ability to customise the template string
 - [ ] Ability to use various logging methods, i.e. "log", "warn", "err", "info", "echo", "echom"
 - [ ] Support for languages:
-  - [x] Javascript
+  - [x] javascript
   - [x] vim
+  - [x] python
+  - [x] dart
   - [ ] c
   - [ ] c++
-  - [ ] Java
+  - [ ] java
   - [ ] ...
