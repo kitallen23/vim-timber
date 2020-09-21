@@ -78,7 +78,7 @@ let g:timber_dart_format_custom        = "print(\"{{value}}: ${{{value}}}\")"
 - [x] Log visual selection (and join multiline to a single line)
 - [x] Log the word under the cursor 
 - [x] Ability to customise the template string
-- [ ] Ability to use various logging methods, i.e. "log", "warn", "err", "info", "echo", "echom"
+- [x] Ability to use various logging methods, i.e. "log", "warn", "err", "info", "echo", "echom"
 - [ ] Support for languages:
   - [x] javascript
   - [x] vim
