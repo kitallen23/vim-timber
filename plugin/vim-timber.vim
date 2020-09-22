@@ -86,7 +86,7 @@ function s:LogVisualSelection(key)
 endfunction
 
 function s:ClearLogs()
-    %s/*console*/abc/gc
+    " %s/*console*/abc/gc
     " let l:initial_position = getpos("'<")
     " normal! gg
     " let l:current_search_res = search("console", "W")
@@ -108,16 +108,29 @@ function s:ClearLogs()
     " %substitute/console/abc/gc
 endfunction
 
-nnoremap <Plug>(TimberLog)        :call <SID>LogWordUnderCursor("default")<CR>
-nnoremap <Plug>(TimberLogInfo)    :call <SID>LogWordUnderCursor("info")<CR>
-nnoremap <Plug>(TimberLogWarning) :call <SID>LogWordUnderCursor("warning")<CR>
-nnoremap <Plug>(TimberLogError)   :call <SID>LogWordUnderCursor("error")<CR>
-nnoremap <Plug>(TimberLogCustom)  :call <SID>LogWordUnderCursor("custom")<CR>
-xnoremap <Plug>(TimberLog)        :call <SID>LogVisualSelection("default")<CR>
-xnoremap <Plug>(TimberLogInfo)    :call <SID>LogVisualSelection("info")<CR>
-xnoremap <Plug>(TimberLogWarning) :call <SID>LogVisualSelection("warning")<CR>
-xnoremap <Plug>(TimberLogError)   :call <SID>LogVisualSelection("error")<CR>
-xnoremap <Plug>(TimberLogCustom)  :call <SID>LogVisualSelection("custom")<CR>
+command! -range TimberLogWordDefault      :call s:LogWordUnderCursor("default")
+command! -range TimberLogWordInfo         :call s:LogWordUnderCursor("info")
+command! -range TimberLogWordWarning      :call s:LogWordUnderCursor("warning")
+command! -range TimberLogWordError        :call s:LogWordUnderCursor("error")
+command! -range TimberLogWordCustom       :call s:LogWordUnderCursor("custom")
 
+command! -range TimberLogSelectionDefault :call s:LogVisualSelection("default")
+command! -range TimberLogSelectionInfo    :call s:LogVisualSelection("info")
+command! -range TimberLogSelectionWarning :call s:LogVisualSelection("warning")
+command! -range TimberLogSelectionError   :call s:LogVisualSelection("error")
+command! -range TimberLogSelectionCustom  :call s:LogVisualSelection("custom")
+
+nnoremap <Plug>(TimberLog)        :TimberLogWordDefault<CR>
+nnoremap <Plug>(TimberLogInfo)    :TimberLogWordInfo<CR>
+nnoremap <Plug>(TimberLogWarning) :TimberLogWordWarning<CR>
+nnoremap <Plug>(TimberLogError)   :TimberLogWordError<CR>
+nnoremap <Plug>(TimberLogCustom)  :TimberLogWordCustom<CR>
+xnoremap <Plug>(TimberLog)        :TimberLogSelectionDefault<CR>
+xnoremap <Plug>(TimberLogInfo)    :TimberLogSelectionInfo<CR>
+xnoremap <Plug>(TimberLogWarning) :TimberLogSelectionWarning<CR>
+xnoremap <Plug>(TimberLogError)   :TimberLogSelectionError<CR>
+xnoremap <Plug>(TimberLogCustom)  :TimberLogSelectionCustom<CR>
+
+command! TimberClear :call s:ClearLogs()
 let &cpo = s:global_cpo
 unlet s:global_cpo
