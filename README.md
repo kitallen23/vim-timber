@@ -1,4 +1,4 @@
-## vim-timber: minimal logger.
+## vim-timber - minimal logger.
 
 In normal mode, log the word (cexpr) under the cursor.
 For more information on cexpr, see `:help <cexpr>`
