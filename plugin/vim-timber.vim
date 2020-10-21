@@ -14,19 +14,23 @@ let s:timber_lang_map = {
         \ "warning": get(g:, "timber_javascript_format_warning", "console.warn(`{{value}}: `, {{value}});"),
         \ "error":   get(g:, "timber_javascript_format_error",   "console.error(`{{value}}: `, {{value}});"),
         \ "custom":  get(g:, "timber_javascript_format_custom",  "console.log(`{{value}}: `, {{value}});"),
+        \ "delete":  get(g:, "timber_javascript_formats_delete", ["console.log", "// console.log"]),
     \ },
     \ "vim": {
-        \ "default": get(g:, "timber_vim_format",        "echo \"{{value}}: \" . {{value}}"),
-        \ "info":    get(g:, "timber_vim_format_info",   "echom \"{{value}}: \" . {{value}}"),
-        \ "custom":  get(g:, "timber_vim_format_custom", "echo \"{{value}}: \" . {{value}}"),
+        \ "default": get(g:, "timber_vim_format",         "echo \"{{value}}: \" . {{value}}"),
+        \ "info":    get(g:, "timber_vim_format_info",    "echom \"{{value}}: \" . {{value}}"),
+        \ "custom":  get(g:, "timber_vim_format_custom",  "echo \"{{value}}: \" . {{value}}"),
+        \ "delete":  get(g:, "timber_vim_formats_delete", ["echo", "\"\\s*echo"]),
     \ },
     \ "dart": {
-        \ "default": get(g:, "timber_dart_format",        "print(\"{{value}}: ${{{value}}}\")"),
-        \ "custom":  get(g:, "timber_dart_format_custom", "print(\"{{value}}: ${{{value}}}\")"),
+        \ "default": get(g:, "timber_dart_format",         "print(\"{{value}}: ${{{value}}}\")"),
+        \ "custom":  get(g:, "timber_dart_format_custom",  "print(\"{{value}}: ${{{value}}}\")"),
+        \ "delete":  get(g:, "timber_dart_formats_delete", ["print("]),
     \ },
     \ "python": {
-        \ "default": get(g:, "timber_python_format",        "print \"{{value}}: \", {{value}}"),
-        \ "custom":  get(g:, "timber_python_format_custom", "print \"{{value}}: \", {{value}}"),
+        \ "default": get(g:, "timber_python_format",         "print \"{{value}}: \", {{value}}"),
+        \ "custom":  get(g:, "timber_python_format_custom",  "print \"{{value}}: \", {{value}}"),
+        \ "delete":  get(g:, "timber_python_formats_delete", ["print "]),
     \ }
 \ }
 
@@ -85,14 +89,44 @@ function s:LogVisualSelection(key)
     call setpos(".", l:initial_position)
 endfunction
 
-function s:ClearLogs()
-    " %s/*console*/abc/gc
-    " let l:initial_position = getpos("'<")
-    " normal! gg
-    " let l:current_search_res = search("console", "W")
-    " let l:search_results = []
-    " echo l:res
+" Get the language-specific string and interpolate the value
+function s:get_delete_formats()
+    let l:lang_group = get(s:timber_lang_map, &filetype, "")
+    let l:formats = get(l:lang_group, "delete", [])
+    let l:interpolated_formats = []
 
+    for format in l:formats
+        let l:interpolated_formats = add(l:interpolated_formats, "^\\s*" . format . "*")
+    endfor
+
+    return l:interpolated_formats
+endfunction
+
+function! s:ClearLogs() abort
+    " Store our initial position
+    let l:initial_position = getpos("'<")
+
+    let l:search_terms = s:get_delete_formats()
+    let l:search_results = {}
+
+    " Loop over each search term
+    for search_term in l:search_terms
+        " Go to start of file, do a full search for each search term
+        normal! gg
+
+        echo "search_term: " . search_term
+        let l:current_search_res = -1
+        " Loop over each result and add it to a map
+        while l:current_search_res != 0
+            let l:current_search_res = search(search_term, "W")
+            if l:current_search_res != 0
+                echom "Search was found: " + l:current_search_res
+                let l:search_results[l:current_search_res] = 1
+            endif
+        endwhile
+        let l:current_search_res = -1
+    endfor
+    echo l:search_results
 
     " PLAN:
     " 1. Store initial position
