@@ -14,7 +14,7 @@ let s:timber_lang_map = {
         \ "warning": get(g:, "timber_javascript_format_warning", "console.warn(`{{value}}: `, {{value}});"),
         \ "error":   get(g:, "timber_javascript_format_error",   "console.error(`{{value}}: `, {{value}});"),
         \ "custom":  get(g:, "timber_javascript_format_custom",  "console.log(`{{value}}: `, {{value}});"),
-        \ "delete":  get(g:, "timber_javascript_formats_delete", ["console.log", "// console.log"]),
+        \ "delete":  get(g:, "timber_javascript_formats_delete", ["console.log", "//\\s*console.log"]),
     \ },
     \ "vim": {
         \ "default": get(g:, "timber_vim_format",         "echo \"{{value}}: \" . {{value}}"),
@@ -104,7 +104,7 @@ endfunction
 
 function! s:ClearLogs() abort
     " Store our initial position
-    let l:initial_position = getpos("'<")
+    let l:initial_position = getpos(".")
 
     let l:search_terms = s:get_delete_formats()
     let l:search_results = {}
@@ -114,19 +114,27 @@ function! s:ClearLogs() abort
         " Go to start of file, do a full search for each search term
         normal! gg
 
-        echo "search_term: " . search_term
         let l:current_search_res = -1
         " Loop over each result and add it to a map
         while l:current_search_res != 0
             let l:current_search_res = search(search_term, "W")
             if l:current_search_res != 0
-                echom "Search was found: " + l:current_search_res
                 let l:search_results[l:current_search_res] = 1
             endif
         endwhile
         let l:current_search_res = -1
     endfor
-    echo l:search_results
+
+    " Sort result map into a list
+    let l:result_list = sort(keys(l:search_results))
+    let l:user_input = confirm("This is a test. Yes?", "&yes, &no, &cancel")
+    echo l:user_input
+
+    " for result in l:result_list
+    "     call setpos(".", [l:initial_position[0], result, l:initial_position[2], l:initial_position[3]])
+    "     let l:choice = confirm("Delete line?", "&yes, &no, &cancel", 1)
+    "     echo l:choice
+    " endfor
 
     " PLAN:
     " 1. Store initial position
@@ -140,6 +148,7 @@ function! s:ClearLogs() abort
     " let choice = confirm("Delete line?", "&yes, &no, &cancel")
     " echo choice
     " %substitute/console/abc/gc
+    call setpos(".", l:initial_position)
 endfunction
 
 command! -range TimberLogWordDefault      :call s:LogWordUnderCursor("default")
@@ -165,6 +174,6 @@ xnoremap <Plug>(TimberLogWarning) :TimberLogSelectionWarning<CR>
 xnoremap <Plug>(TimberLogError)   :TimberLogSelectionError<CR>
 xnoremap <Plug>(TimberLogCustom)  :TimberLogSelectionCustom<CR>
 
-command! TimberClear :call s:ClearLogs()
+command! -range TimberClear :call s:ClearLogs()
 let &cpo = s:global_cpo
 unlet s:global_cpo
