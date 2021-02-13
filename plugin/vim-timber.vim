@@ -16,6 +16,14 @@ let s:timber_lang_map = {
         \ "custom":  get(g:, "timber_javascript_format_custom",  "console.log(`{{value}}: `, {{value}});"),
         \ "delete":  get(g:, "timber_javascript_formats_delete", ["console.log", "//\\s*console.log"]),
     \ },
+    \ "typescript":  {
+        \ "default": get(g:, "timber_typescript_format",         "console.log(`{{value}}: `, {{value}});"),
+        \ "info":    get(g:, "timber_typescript_format_info",    "console.info(`{{value}}: `, {{value}});"),
+        \ "warning": get(g:, "timber_typescript_format_warning", "console.warn(`{{value}}: `, {{value}});"),
+        \ "error":   get(g:, "timber_typescript_format_error",   "console.error(`{{value}}: `, {{value}});"),
+        \ "custom":  get(g:, "timber_typescript_format_custom",  "console.log(`{{value}}: `, {{value}});"),
+        \ "delete":  get(g:, "timber_typescript_formats_delete", ["console.log", "//\\s*console.log"]),
+    \ },
     \ "vim": {
         \ "default": get(g:, "timber_vim_format",         "echo \"{{value}}: \" . {{value}}"),
         \ "info":    get(g:, "timber_vim_format_info",    "echom \"{{value}}: \" . {{value}}"),
