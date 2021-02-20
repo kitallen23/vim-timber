@@ -1,6 +1,6 @@
-" if exists("g:loaded_jslogs") || &cp
-"     finish
-" endif
+if exists("g:loaded_jslogs") || &cp
+    finish
+endif
 
 let g:loaded_jslogs = 100   " version number
 let s:global_cpo = &cpo     " store compatible-mode in local variable
